@@ -1,20 +1,20 @@
 {
-  "name": "local-caffeine-weborder",
-  "private": true,
+  "name": "sarang-butter-ordering",
   "version": "1.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node ./node_modules/vite/bin/vite.js --host 0.0.0.0 --port 5173",
-    "build": "node ./node_modules/vite/bin/vite.js build",
-    "preview": "node ./node_modules/vite/bin/vite.js preview --host 0.0.0.0 --port 4173"
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs && node dev/server.mjs",
+    "test": "node scripts/build.mjs && node dev/test-api.mjs"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
-    "lucide-react": "^0.460.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.4",
-    "vite": "^5.4.11"
+    "@netlify/blobs": ">=8.0.0",
+    "jspdf": "2.5.1",
+    "leaflet": "1.9.4",
+    "qrcode-generator": "1.4.4"
   }
 }

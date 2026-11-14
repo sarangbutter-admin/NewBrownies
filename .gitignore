@@ -1,4 +1,11 @@
 node_modules/
-dist/
+.data/
+.testdata/
+.env
+.env.*
+!.env.example
+.netlify/
+public/vendor/
+netlify/functions/catalog.json
+*.log
 .DS_Store
-*.local

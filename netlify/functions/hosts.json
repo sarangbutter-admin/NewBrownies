@@ -1,0 +1,11 @@
+{
+  "admin": [
+    "admin.sarangbutter.com",
+    "dev--sarangorder.netlify.app",
+    "localhost",
+    "127.0.0.1"
+  ],
+  "shop": {
+    "admin.sarangbutter.com": "https://sarangbutter.com"
+  }
+}
