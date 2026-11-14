@@ -84,3 +84,7 @@ npm run dev     # http://localhost:8888  (owner setup key: dev-setup-key-123456)
 * `supabase/migrations/0001_init.sql` – database setup. `netlify.toml` – build + security headers.
 * `.env.example` – the variables to set in Netlify (never commit real values).
 
+
+## Previewing the `dev` branch
+Netlify branch deploys build `dev` with the settings in `netlify.toml` (`npm run build`, publish `public`).
+Preview URL: `https://dev--<project-name>.netlify.app`. Locally: `npm run dev`, then open http://localhost:8888.
