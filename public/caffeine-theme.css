@@ -1,54 +1,116 @@
-/* CAFFEINE look (warm espresso + caramel, Jost) layered over the Sarang base.
-   Loaded after the inline styles in index.html. Owner colour/font settings saved in the admin still win. */
+/* CAFFEINE original look, applied on top of the existing ordering code.
+   Values are taken from the original src/styles/caffeine.css (git history of main). */
 :root{
-  --fd:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --fb:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --red:#4d2100;          /* accent: espresso */
-  --red2:#361700;         /* accent: hover / header */
-  --cream:#f7ece2;        /* text on dark */
-  --ink:#1c0d03;          /* main text */
-  --mus:#c29b7c;          /* soft accent */
-  --bg:#be865c;           /* page */
-  --card:#f7ece2;         /* cards */
-  --ct:#1c0d03;
-  --pc:#4d2100;
-  --bc:#976a49;           /* borders */
-  --cf-radius:20px;
+  --bg-body:#be865c; --bg-card:#b57e55; --border-card:#976a49;
+  --text-primary:#000; --text-muted:#2c1708;
+  --accent-espresso:#4d2100; --accent-espresso-hover:#361700; --text-on-dark:#f7ece2;
+  --footer-bg:#121212; --footer-text:#c29b7c; --media-bg:#9e6b45;
+  --radius-card:20px; --radius-field:8px; --max-width:1440px; --grid-gap:30px; --section-gap:72px;
+  /* map onto the variables the existing code already uses */
+  --fd:'Jost',-apple-system,BlinkMacSystemFont,sans-serif; --fb:'Jost',-apple-system,BlinkMacSystemFont,sans-serif;
+  --bg:var(--bg-body); --card:var(--bg-card); --ct:#000; --ink:#000; --pc:var(--accent-espresso);
+  --red:var(--accent-espresso); --red2:var(--accent-espresso-hover); --cream:var(--text-on-dark);
+  --mus:var(--footer-text); --bc:var(--border-card);
 }
-body{font-family:var(--fb);font-weight:400;font-size:16px;-webkit-font-smoothing:antialiased}
-h1,h2,h3,.logo,.cart{font-family:var(--fd);font-weight:600;letter-spacing:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg-body);color:#000;font-family:'Jost',sans-serif;font-size:17px;line-height:1.35;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Jost',sans-serif;color:#000}
 
-/* header + ticker */
-.hd{background:var(--red);border-bottom:0;box-shadow:0 2px 0 #00000022}
-.logo{font-weight:700;letter-spacing:.02em}
-.tk{background:var(--red2);color:var(--cream);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+/* wide layout like the original container */
+html.dsk .top,html.dsk .app{max-width:var(--max-width)}
+html.dsk .app{padding:0 32px 140px}
+.top{max-width:none}
 
-/* cards, buttons, inputs: softer, rounder, no hard offset shadows */
-.cd,.slide>div,.bx{border-radius:var(--cf-radius);border:1px solid var(--bc);box-shadow:0 4px 14px #4d210026}
-.cb{box-shadow:none;border:1px solid #ffffff55}
-.bt{border-radius:999px;font-weight:600;letter-spacing:.03em;box-shadow:none}
-input.f,select,textarea{border-radius:10px}
-h2.rv{color:var(--red)}
+/* announcement bar (was the scrolling ticker) */
+.tk2,.tk{background:var(--accent-espresso);color:var(--text-on-dark);font-size:14px;letter-spacing:.04em;text-transform:uppercase;font-weight:400;padding:10px 0;margin:0}
+.tk2 .mq span{color:var(--text-on-dark)}
 
-/* hero: full-width carousel with the text and buttons on top (see HERO defaults in index.html) */
-.hero{padding:0 0 6px;text-align:center}
-.hero .hcar{border-radius:0 0 var(--cf-radius) var(--cf-radius);border:0;box-shadow:none;background:var(--red2)}
-.hero .hsl{height:clamp(300px,52vw,520px)}
+/* header */
+.hd{position:sticky;background:var(--bg-body);border-bottom:1px solid var(--border-card);box-shadow:none;max-width:none;margin:0;padding:18px 32px;gap:24px}
+html.dsk .hd{max-width:var(--max-width);margin:0 auto}
+.hd .logo{color:#000;font-size:26px;font-weight:600;letter-spacing:-.03em;text-transform:uppercase;line-height:1;gap:10px}
+.hd .logo small{color:var(--text-muted);font-size:11px;font-weight:400;letter-spacing:.14em;margin-top:3px}
+.hd .logo .lgi{border:0;box-shadow:none;border-radius:10px}
+.hd .cb{background:transparent;color:#000;border:1px solid var(--border-card);box-shadow:none;border-radius:999px;font:500 14px 'Jost',sans-serif;padding:9px 14px}
+.hd .cb:hover{background:var(--bg-card)}
+.hd .cb.cartbtn{background:var(--accent-espresso);border-color:var(--accent-espresso);color:var(--text-on-dark)}
+.hd .cb.cartbtn:hover{background:var(--accent-espresso-hover)}
+.hd .cb.cartbtn svg,.hd .cb.cartbtn img{filter:brightness(0) invert(1)}
+.hd .bd{background:var(--bg-body);color:#000;font-weight:600}
+
+/* no decorative checker strip in CAFFEINE */
+.chk{display:none}
+
+/* hero: bordered card with the carousel inside */
+.hero,html.dsk .hero{max-width:var(--max-width);margin:40px auto 0;padding:0;text-align:left}
+#menu,#bbh{padding-left:0!important;padding-right:0!important}
+html.dsk #bbh{max-width:var(--max-width)}
+.hero .hcar{border:1px solid var(--border-card);border-radius:var(--radius-card);box-shadow:none;background:var(--media-bg)}
+.hero .hsl{height:clamp(320px,42vw,560px)}
 .hero .hsl>img,.hero .hsl>video{object-fit:cover}
-.hero .hov{padding:28px 20px 44px}
-.hero .ovt{font-weight:700;letter-spacing:-.01em}
-.hero .ovs{font-weight:500;font-size:calc(16px*var(--k))}
-.hero .ovbtn{border-radius:999px;padding:11px 22px;font-size:calc(15px*var(--k));font-weight:600}
-.hero .hdots{bottom:14px}
-.hero .sub{color:var(--ink);font-size:17px;max-width:44ch;margin:18px auto 0}
-@media (min-width:900px){
-  html.dsk .hero{max-width:none;margin:0;padding-top:0}
-  html.dsk .hero .hcar{border-radius:0 0 28px 28px}
-}
+.hero .hov{padding:56px 48px}
+.hero .ovt{font-weight:500;letter-spacing:-.025em;line-height:.98;font-size:clamp(46px,5.5vw,80px);max-width:12ch;color:#fff;text-shadow:none}
+.hero .ovs{font-size:19px;font-weight:400;line-height:1.4;max-width:520px;text-shadow:none}
+.hero .ovbtn{border-radius:var(--radius-field);padding:14px 26px;font:500 16px 'Jost',sans-serif;box-shadow:none}
+.hero .hdots{bottom:16px}
+.hero .sub{display:none}
+@media (max-width:700px){.hero{margin-top:24px}.hero .hov{padding:28px 22px}.hero .hsl{height:420px}}
 
-/* header: light logo text on the espresso bar */
-.hd .logo{color:var(--cream)}.hd .logo small{color:var(--mus)}
-.hd .cb.cartbtn{background:var(--cream);color:var(--red);border:0}
-h2.rv,.sec h2{font-weight:600}
-/* phones: icon only in the header so the buttons fit (the brand is in the ticker and hero) */
-@media (max-width:600px){.hd .logo{font-size:0;gap:0;flex:0 0 auto}.hd .logo small{display:none}}
+/* filter bar */
+.tbar{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;padding:0 0 20px;margin:var(--section-gap) 0 30px;border-bottom:1px solid var(--border-card);background:none}
+.tbar .sq{flex:1 1 280px;order:3;background:transparent;border:1px solid var(--border-card);border-radius:var(--radius-field);color:#000;padding:10px 14px;font:400 15px 'Jost',sans-serif;box-shadow:none;max-width:360px}
+.tbar .sq::placeholder{color:var(--text-muted);opacity:.8}
+.chipsx{order:1;display:flex;flex-wrap:wrap;gap:8px;flex:1 1 auto;overflow:visible}
+.chipsx button{padding:8px 16px;border-radius:999px;border:1px solid var(--border-card);background:transparent;color:#000;font:500 14px 'Jost',sans-serif;box-shadow:none;transition:all .15s}
+.chipsx button:hover{background:var(--bg-card)}
+.chipsx button.on{background:var(--accent-espresso);border-color:var(--accent-espresso);color:var(--text-on-dark)}
+.srow{order:2;display:flex;gap:10px;align-items:center}
+.srow select{background:transparent;border:1px solid var(--border-card);border-radius:var(--radius-field);color:#000;padding:10px 14px;font:400 15px 'Jost',sans-serif;box-shadow:none}
+.vt{border:1px solid var(--border-card);border-radius:var(--radius-field);overflow:hidden;background:transparent;box-shadow:none}
+.vt button{background:transparent;color:#000}.vt button.on{background:var(--accent-espresso);color:var(--text-on-dark)}
+
+/* section titles */
+h2.rv{font-size:clamp(34px,3.6vw,52px);font-weight:500;line-height:1.02;letter-spacing:-.02em;color:#000;text-shadow:none;margin:var(--section-gap) 0 32px}
+h2.rv i{display:none}
+
+/* product cards: vertical, square image on top */
+#pl{gap:var(--grid-gap)}
+.cd{display:flex;flex-direction:column;gap:0;padding:0;background:var(--bg-card);border:0;border-radius:var(--radius-card);box-shadow:none;overflow:hidden;color:#000;transition:transform .2s ease}
+.cd:hover{transform:translateY(-3px)}
+.cd:active{box-shadow:none}
+.cd .tcol{width:100%;flex:none}
+.cd .tile{width:100%;height:auto;aspect-ratio:1/1;border-radius:0;background:var(--media-bg)!important;font-size:96px}
+.cd .tile::before,.cd .tile::after{display:none!important}
+.cd .tile{background-image:none!important}
+.cd .tile img{width:100%;height:100%;object-fit:cover}
+.cd>div:nth-child(2){padding:22px 22px 4px}
+.cd h3{font-size:21px;font-weight:500;color:#000}
+.cd p{font-size:14px;color:var(--text-muted);margin:6px 0 10px}
+.cd .pr{font-size:20px;font-weight:600;color:#000}
+.cd .qvb{align-self:stretch;margin:8px 22px 22px;height:46px;border-radius:var(--radius-field);background:var(--accent-espresso)!important;color:var(--text-on-dark)!important;box-shadow:none;font:500 15px 'Jost',sans-serif}
+.cd .qvb .dxic{display:none}
+.cd .qvb::after{content:'+ Add to Order';font-size:15px}
+.cd .qvb:hover{background:var(--accent-espresso-hover)!important}
+
+/* buttons and boxes everywhere else (cart, checkout, panels) */
+.bt{background:var(--accent-espresso);color:var(--text-on-dark);border:1px solid var(--accent-espresso);border-radius:var(--radius-field);box-shadow:none;font:500 16px 'Jost',sans-serif;letter-spacing:0}
+.bt:hover{background:var(--accent-espresso-hover)}
+.bt.g{background:transparent;color:#000;border-color:#000}
+.bx,.pn,.pg .in{background:var(--bg-body);color:#000;border:1px solid var(--border-card);border-radius:var(--radius-card);box-shadow:none}
+input.f,select.f,textarea.f{background:transparent;border:1px solid var(--border-card);border-radius:var(--radius-field);color:#000}
+
+/* floating cart bar */
+.bar{background:var(--accent-espresso);color:var(--text-on-dark);border:0;border-radius:12px;box-shadow:0 8px 24px #00000040;font-weight:500}
+
+/* footer */
+#sft:empty{display:none}
+#sft:not(:empty){background:var(--footer-bg);color:var(--footer-text);margin:var(--section-gap) -32px 0;padding:8px 32px 0}
+#sft a,#sft h3,#sft b{color:var(--footer-text)}
+
+@media (max-width:700px){
+  .hd{padding:14px 16px}
+  .hd .logo{font-size:0;gap:0}.hd .logo small{display:none}
+  html.dsk .app,.app{padding:0 16px 130px}
+  #sft{margin:48px -16px 0;padding:8px 16px 0}
+}
+.pn .tile,.pn .hg{background:var(--media-bg)!important;background-image:none!important;border:0}
