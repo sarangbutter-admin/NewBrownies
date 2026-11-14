@@ -1,0 +1,54 @@
+/* CAFFEINE look (warm espresso + caramel, Jost) layered over the Sarang base.
+   Loaded after the inline styles in index.html. Owner colour/font settings saved in the admin still win. */
+:root{
+  --fd:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --fb:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --red:#4d2100;          /* accent: espresso */
+  --red2:#361700;         /* accent: hover / header */
+  --cream:#f7ece2;        /* text on dark */
+  --ink:#1c0d03;          /* main text */
+  --mus:#c29b7c;          /* soft accent */
+  --bg:#be865c;           /* page */
+  --card:#f7ece2;         /* cards */
+  --ct:#1c0d03;
+  --pc:#4d2100;
+  --bc:#976a49;           /* borders */
+  --cf-radius:20px;
+}
+body{font-family:var(--fb);font-weight:400;font-size:16px;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.logo,.cart{font-family:var(--fd);font-weight:600;letter-spacing:0}
+
+/* header + ticker */
+.hd{background:var(--red);border-bottom:0;box-shadow:0 2px 0 #00000022}
+.logo{font-weight:700;letter-spacing:.02em}
+.tk{background:var(--red2);color:var(--cream);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+
+/* cards, buttons, inputs: softer, rounder, no hard offset shadows */
+.cd,.slide>div,.bx{border-radius:var(--cf-radius);border:1px solid var(--bc);box-shadow:0 4px 14px #4d210026}
+.cb{box-shadow:none;border:1px solid #ffffff55}
+.bt{border-radius:999px;font-weight:600;letter-spacing:.03em;box-shadow:none}
+input.f,select,textarea{border-radius:10px}
+h2.rv{color:var(--red)}
+
+/* hero: full-width carousel with the text and buttons on top (see HERO defaults in index.html) */
+.hero{padding:0 0 6px;text-align:center}
+.hero .hcar{border-radius:0 0 var(--cf-radius) var(--cf-radius);border:0;box-shadow:none;background:var(--red2)}
+.hero .hsl{height:clamp(300px,52vw,520px)}
+.hero .hsl>img,.hero .hsl>video{object-fit:cover}
+.hero .hov{padding:28px 20px 44px}
+.hero .ovt{font-weight:700;letter-spacing:-.01em}
+.hero .ovs{font-weight:500;font-size:calc(16px*var(--k))}
+.hero .ovbtn{border-radius:999px;padding:11px 22px;font-size:calc(15px*var(--k));font-weight:600}
+.hero .hdots{bottom:14px}
+.hero .sub{color:var(--ink);font-size:17px;max-width:44ch;margin:18px auto 0}
+@media (min-width:900px){
+  html.dsk .hero{max-width:none;margin:0;padding-top:0}
+  html.dsk .hero .hcar{border-radius:0 0 28px 28px}
+}
+
+/* header: light logo text on the espresso bar */
+.hd .logo{color:var(--cream)}.hd .logo small{color:var(--mus)}
+.hd .cb.cartbtn{background:var(--cream);color:var(--red);border:0}
+h2.rv,.sec h2{font-weight:600}
+/* phones: icon only in the header so the buttons fit (the brand is in the ticker and hero) */
+@media (max-width:600px){.hd .logo{font-size:0;gap:0;flex:0 0 auto}.hd .logo small{display:none}}

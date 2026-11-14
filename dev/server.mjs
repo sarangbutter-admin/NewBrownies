@@ -5,7 +5,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), p
 process.env.SESSION_SECRET ||= 'dev-secret-dev-secret-dev-secret-1234'; process.env.OWNER_SETUP_KEY ||= 'dev-setup-key-123456';
 const app = makeApp(fsStore(process.env.DATA_DIR || path.join(root, '.data')));
 const toml = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8'), CSP = (toml.match(/Content-Security-Policy = "([^"]+)"/) || [])[1];
-const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json', '.txt': 'text/plain' };
+const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript', '.png': 'image/png', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.json': 'application/json', '.txt': 'text/plain' };
 http.createServer(async (rq, rs) => {
   try {
     const u = new URL(rq.url, `http://${rq.headers.host}`);

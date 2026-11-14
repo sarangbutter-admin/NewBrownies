@@ -77,7 +77,7 @@ const DEF = {
 };
 const BS_API = 'https://api.biteship.com/v1', BS_URL = BS_API + '/rates/couriers', GEO_URL = 'https://nominatim.openstreetmap.org';
 /* a picture for the shop: an uploaded file id or an https link */
-const okMedia = u => /^[0-9a-f]{24}$/.test(u) || (/^https:\/\/[^\s"'<>`\\]{4,500}$/.test(u) && !/^https:\/\/[^/]*@/.test(u));
+const okMedia = u => /^[0-9a-f]{24}$/.test(u) || /^\/hero\/[\w.-]{1,80}$/.test(u) || (/^https:\/\/[^\s"'<>`\\]{4,500}$/.test(u) && !/^https:\/\/[^/]*@/.test(u));
 const COLLECTIONS = new Set(['orders', 'status', 'menu', 'cats', 'variants', 'coupons', 'redeem', 'reviews', 'proofs', 'complaints', 'cmpimgs', 'logs', 'customers', 'config', 'news', 'flash']);
 const PUBLIC_CONFIG = new Set(['announce', 'order', 'badges', 'fonts', 'theme', 'pay2', 'thanks', 'thanks2', 'strip2', 'landing', 'marquee', 'ship', 'fees', 'slots', 'tiers', 'shop', 'pm', 'boxlid', 'methods', 'ship2', 'courier', 'fdev', 'bg', 'cdown', 'pdet', 'turnstile', 'mkt', 'doku', 'pl', 'lay', 'bb', 'rrw', 'gbadge', 'aff', 'foot', 'loc', 'faq']);
 const pubCourier = d => { const { on, op, oa, onote, pkc, lat, lng, pc, ttl, ...rest } = d || {}; return rest; };
