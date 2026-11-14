@@ -88,3 +88,7 @@ npm run dev     # http://localhost:8888  (owner setup key: dev-setup-key-123456)
 ## Previewing the `dev` branch
 Netlify branch deploys build `dev` with the settings in `netlify.toml` (`npm run build`, publish `public`).
 Preview URL: `https://dev--<project-name>.netlify.app`. Locally: `npm run dev`, then open http://localhost:8888.
+
+## Admin on a preview address
+The owner area only opens on hosts listed in `netlify/functions/hosts.json` or in the `ADMIN_HOSTS` environment variable
+(comma separated, no `https://`). For the preview site set `ADMIN_HOSTS=dev--newbrownies.netlify.app`, then open `/admin`.
