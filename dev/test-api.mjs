@@ -1141,12 +1141,15 @@ console.log('— brownie / cup builder: base, fillings and toppings with a maxim
   await owner.db({ op: 'set', path: 'menu/9104', data: { custom: true, n: 'Portion Brownie', c: 'Brownies', p: 30000, vr: ['bbase', 'bfill', 'btop'], bld: 'brownie', bc: { t: ['4', 2, 0, 2, 99, -1], f: [2, 0] } } });
   ok('a portion rule is cleaned and sorted', JSON.stringify((await pub.db({ op: 'get', path: 'menu/9104' })).body.data.bc) === JSON.stringify({ t: [0, 2, 4], f: [0, 2] }));
   await clr();
-  rb = await alice.post('/api/order', orderBody({ items: [{ id: 9104, q: 1, t: ['v_bbase_0', 'v_btop_0', 'v_bfill_0'], c: { v_btop_0: 2, v_bfill_0: 2 } }] }));
+  rb = await alice.post('/api/order', orderBody({ items: [{ id: 9104, q: 1, t: ['v_bbase_0', 'v_btop_0', 'v_bfill_0'], c: { v_btop_0: 4, v_bfill_0: 2 } }] }));
   const lp2 = rb.body.order && rb.body.order.items[0];
-  ok('2 toppings as Oreo twice and 2 fillings as Nutella twice: 30.000 + 2×3.000 + 2×5.000', rb.status === 200 && lp2.u === 46000 && lp2.t.includes('Topping: Oreo ×2') && lp2.t.includes('Filling: Nutella ×2'));
+  ok('1 topping kind fills the whole top (×4) and 1 filling kind fills the whole inside (×2): 30.000 + 4×3.000 + 2×5.000', rb.status === 200 && lp2.u === 52000 && lp2.t.includes('Topping: Oreo ×4') && lp2.t.includes('Filling: Nutella ×2'));
+  await clr();
+  rb = await alice.post('/api/order', orderBody({ items: [{ id: 9104, q: 1, t: ['v_bbase_0', 'v_btop_0', 'v_btop_1'], c: { v_btop_0: 2, v_btop_1: 2 } }] }));
+  ok('2 topping kinds are ×2 each: 30.000 + 2×3.000 + 2×0', rb.status === 200 && rb.body.order.items[0].u === 36000);
   await clr();
   rb = await alice.post('/api/order', orderBody({ items: [{ id: 9104, q: 1, t: ['v_bbase_0', 'v_btop_0', 'v_btop_1'], c: { v_btop_0: 2 } }] }));
-  ok('3 toppings is not an allowed number', rb.status === 400 && /2 or 4 toppings \(or none\)/.test(JSON.stringify(rb.body)));
+  ok('a top that is not fully covered is refused', rb.status === 400 && /fill all the toppings/.test(JSON.stringify(rb.body)));
   await clr();
   rb = await alice.post('/api/order', orderBody({ items: [{ id: 9104, q: 1, t: ['v_bbase_1'] }] }));
   ok('no toppings and no fillings is allowed when 0 is offered', rb.status === 200 && rb.body.order.items[0].u === 34000);

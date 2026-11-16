@@ -231,8 +231,9 @@ export function makeApp(store, opt = {}) {
       }
       for (const g of groups) if (g.req && !used[g.id]) throw E(400, 'variant_required', `Please choose an option for ${g.n} (${p.n}).`);
       if (p.bc && !big) for (const [role, key, word] of [['fill', 'f', 'fillings'], ['top', 't', 'toppings']]) {
-        const L = Array.isArray(p.bc[key]) ? p.bc[key] : [];
-        if (L.length && !L.includes(por[role])) throw E(400, 'portions', `Please choose ${L.filter(x => x > 0).join(' or ')} ${word}${L.includes(0) ? ' (or none)' : ''} for ${p.n}.`);
+        /* the biggest number is the full amount (1 kind = ×4, 2 kinds = ×2 each, …): a line has either none (when 0 is allowed) or exactly the full amount */
+        const L = Array.isArray(p.bc[key]) ? p.bc[key] : [], full = L.length ? Math.max(...L) : 0;
+        if (L.length && !(por[role] === full || (por[role] === 0 && L.includes(0)))) throw E(400, 'portions', `Please fill all the ${word} for ${p.n}${L.includes(0) ? ', or choose none' : ''}.`);
       }
       /* Gift box: the customer fills it with exactly bx.n pieces from the products the owner allowed. The box has its own fixed price;
          the pieces inside are checked for availability and stock like normal items, and listed on the order. */
