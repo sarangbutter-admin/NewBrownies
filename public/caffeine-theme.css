@@ -324,3 +324,26 @@ svg.ic{width:1.15em;height:1.15em;vertical-align:-.2em;fill:none;stroke:currentC
 .gt i svg,.gt i img{display:none!important}
 .gb.ok .gt u{background:var(--cf-btn)!important}.gb.ok .gl{color:#000!important}
 .ge em{opacity:.7}
+
+/* ---- brownie: closes into a kraft box (box base rises, lid drops) before going into the cart ---- */
+.bbrw .bwrap{position:relative;width:min(260px,80%);margin:30px auto 0}
+.bbrw .bwrap .bslab{width:100%;margin:0}
+.bbrw .bbx{position:absolute;left:-14px;right:-14px;bottom:-10px;height:64%;z-index:2;border-radius:4px 4px 8px 8px;background:linear-gradient(180deg,#d9b98f,#c49a6c);box-shadow:inset 0 2px 0 #ffffff59,0 6px 10px #00000033;opacity:0;transform:translateY(40px)}
+.bbrw .blid{position:absolute;left:-18px;right:-18px;top:-30px;height:calc(46% + 30px);z-index:3;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,#e6caa3,#cfa877);box-shadow:inset 0 -3px 0 #0000001a,0 4px 8px #00000026;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--accent-espresso);opacity:0;transform:translateY(-140px)}
+.bbrw .blid span{font:700 15px/1 'Jost',sans-serif;letter-spacing:.2em}
+.bbrw .blid small{font:500 8px/1 'Jost',sans-serif;letter-spacing:.3em}
+.bbrw.shut .bbx{animation:bbxIn .45s cubic-bezier(.2,.9,.3,1) forwards}
+@keyframes bbxIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+.bbrw.shut .blid{animation:blidIn .7s .4s cubic-bezier(.3,1.3,.5,1) forwards}
+@keyframes blidIn{0%{opacity:0;transform:translateY(-140px)}60%{opacity:1;transform:translateY(6px)}80%{transform:translateY(-3px)}100%{opacity:1;transform:none}}
+.bbrw.shut .bwrap{animation:cupPop .35s 1.05s ease-out}
+@media (max-width:700px){.bbrw .bwrap{width:200px;margin-top:22px}}
+@media (prefers-reduced-motion:reduce){.bbrw.shut .bbx,.bbrw.shut .blid,.bbrw.shut .bwrap{animation-duration:.01s;animation-delay:0s}}
+
+/* ---- pictures on fillings and toppings ---- */
+.bop.hasimg{display:grid;grid-template-columns:40px 1fr;column-gap:10px;align-items:center}
+.bop.hasimg .bopi{grid-row:1/3;width:40px;height:40px;border-radius:8px;object-fit:cover;background:#0000000d}
+.tpi{width:26px;height:26px;border-radius:6px;object-fit:cover;vertical-align:middle;margin-right:6px}
+.btp.pic{width:26px;height:26px;margin-left:-13px;top:-8px;border-radius:50%;background-size:cover;background-position:center;box-shadow:0 2px 4px #00000055,0 0 0 2px #fff}
+.bfl.pic,.cfl.pic{background-size:cover!important;background-position:center!important}
+.blg img{width:16px;height:16px;border-radius:50%;object-fit:cover}

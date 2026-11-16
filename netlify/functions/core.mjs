@@ -909,6 +909,8 @@ export function makeApp(store, opt = {}) {
       if (col === 'variants') { /* brownie/cup builder: how many options a customer may pick, and where the group shows (filling inside, topping on top) */
         const mx = Math.floor(+merged.max); if (mx > 0) merged.max = Math.min(mx, 20); else delete merged.max;
         if (!['fill', 'top'].includes(merged.role)) delete merged.role;
+        /* each option may have a picture: an uploaded file id or an https link; anything else is dropped */
+        if (Array.isArray(merged.opts)) merged.opts = merged.opts.map(o => { if (!isObj(o)) return o; const { img, ...rest } = o; const u = String(img || '').trim(); return okMedia(u) && !/^\/hero\//.test(u) ? { ...rest, img: u } : rest; });
       }
       if (col === 'menu') { /* builder screen for this product: build-your-brownie or brownie cup (not for gift boxes) */
         if (['brownie', 'cup'].includes(merged.bld) && !merged.bx) { /* keep */ } else delete merged.bld;

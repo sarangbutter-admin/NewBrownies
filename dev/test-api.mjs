@@ -1115,10 +1115,11 @@ console.log('— Affiliates: signup, attribution, commission on product total, h
 console.log('— brownie / cup builder: base, fillings and toppings with a maximum');
 { const clr = async () => { for (const k of await store.list('sec/rl/')) await store.del(k); };
   await owner.db({ op: 'set', path: 'variants/bbase', data: { id: 'bbase', n: 'Base', req: true, opts: [{ n: 'Semi-sweet', p: 0 }, { n: 'Bittersweet', p: 4000 }] } });
-  await owner.db({ op: 'set', path: 'variants/bfill', data: { id: 'bfill', n: 'Filling', req: false, max: 2, role: 'fill', opts: [{ n: 'Nutella', p: 5000 }, { n: 'Cream cheese', p: 4000 }, { n: 'Salted caramel', p: 0 }] } });
+  await owner.db({ op: 'set', path: 'variants/bfill', data: { id: 'bfill', n: 'Filling', req: false, max: 2, role: 'fill', opts: [{ n: 'Nutella', p: 5000, img: 'c'.repeat(24) }, { n: 'Cream cheese', p: 4000, img: 'https://x.co/cc.png' }, { n: 'Salted caramel', p: 0, img: 'javascript:alert(1)' }] } });
   await owner.db({ op: 'set', path: 'variants/btop', data: { id: 'btop', n: 'Topping', req: false, max: 99, role: 'odd', opts: [{ n: 'Oreo', p: 3000 }, { n: 'Sprinkles', p: 0 }] } });
   const vf = (await pub.db({ op: 'get', path: 'variants/bfill' })).body.data, vt = (await pub.db({ op: 'get', path: 'variants/btop' })).body.data;
   ok('a filling group keeps its maximum and role', vf.max === 2 && vf.role === 'fill');
+  ok('option pictures keep uploaded ids and https links and drop anything else', vf.opts[0].img === 'c'.repeat(24) && vf.opts[1].img === 'https://x.co/cc.png' && !('img' in vf.opts[2]) && vf.opts[2].n === 'Salted caramel' && vf.opts[2].p === 0);
   ok('a too-big maximum is capped at 20 and an unknown role is dropped', vt.max === 20 && !('role' in vt));
   await owner.db({ op: 'set', path: 'menu/9101', data: { custom: true, n: 'Build Your Brownie', c: 'Brownies', p: 30000, vr: ['bbase', 'bfill', 'btop'], bld: 'brownie' } });
   await owner.db({ op: 'set', path: 'menu/9102', data: { custom: true, n: 'Odd Builder', c: 'Brownies', p: 30000, bld: 'pizza' } });
