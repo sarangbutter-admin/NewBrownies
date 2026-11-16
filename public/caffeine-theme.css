@@ -439,3 +439,9 @@ svg.ic{width:1.15em;height:1.15em;vertical-align:-.2em;fill:none;stroke:currentC
 .tsq{overflow:visible}.tcr{border-radius:inherit}
 .btv{overflow:visible}
 @media (max-width:700px){.bld .bst.btv{overflow:visible}}
+/* equal topping parts: faint dashed guides between halves / quarters / cup slices */
+.tzg{position:absolute;inset:0;pointer-events:none}
+.tzv,.tzh,.tzr{position:absolute;display:block}
+.tzv{top:6%;bottom:6%;width:0;border-left:1.5px dashed #ffffff40}
+.tzh{left:6%;right:6%;height:0;border-top:1.5px dashed #ffffff40}
+.tzr{left:50%;top:50%;width:46%;height:0;border-top:1.5px dashed #ffffff40;transform-origin:0 0}
