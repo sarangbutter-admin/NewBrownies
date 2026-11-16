@@ -347,3 +347,12 @@ svg.ic{width:1.15em;height:1.15em;vertical-align:-.2em;fill:none;stroke:currentC
 .btp.pic{width:26px;height:26px;margin-left:-13px;top:-8px;border-radius:50%;background-size:cover;background-position:center;box-shadow:0 2px 4px #00000055,0 0 0 2px #fff}
 .bfl.pic,.cfl.pic{background-size:cover!important;background-position:center!important}
 .blg img{width:16px;height:16px;border-radius:50%;object-fit:cover}
+
+/* ---- portion rule: "how many?" choice, repeat badge and minus on option tiles ---- */
+.bnum{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.bnum button{border:1px solid var(--border-card);background:transparent;color:#000;border-radius:999px;padding:8px 14px;font:500 14px 'Jost',sans-serif;cursor:pointer}
+.bnum button.on{background:var(--cf-btn);border-color:var(--cf-btn);color:var(--cf-btn-fg)}
+.bcg>.bgr{margin:0 0 12px}
+.bop.pc{position:relative;padding-right:44px}
+.bop .bq{position:absolute;top:8px;right:10px;font:600 13px 'Jost',sans-serif;opacity:.95}
+.bop .bmin{position:absolute;right:8px;bottom:8px;width:26px;height:26px;border-radius:50%;border:1px solid currentColor;background:transparent;color:inherit;font:600 16px/1 'Jost',sans-serif;display:grid;place-items:center;cursor:pointer;padding:0}

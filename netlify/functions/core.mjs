@@ -206,7 +206,7 @@ export function makeApp(store, opt = {}) {
     if (d && (d.del || d.off)) return null;
     const now = Date.now(), flash = d && d.fp && d.fs && d.fe && now >= d.fs && now < d.fe;
     const reg = d && +d.price > 0 ? +d.price : base ? base.p : +d.p || 0, price = flash ? +d.fp : reg;
-    return { id: base ? base.id : +id, n: (d && d.n) || (base && base.n) || 'Item', e: (d && d.e) || (base && base.e) || '🍽️', price, ob: flash && reg > price ? reg : 0, kg: (d && +d.kg) || .4, stock: d && +d.sou > now ? 0 : d && typeof d.stock === 'number' ? d.stock : null, sot: !!(d && +d.sou > now), vr: ((d && d.vr) || []).filter(v => !((d && d.vd) || []).includes(v)), bx: d && isObj(d.bx) && Array.isArray(d.bx.ids) ? d.bx : null };
+    return { id: base ? base.id : +id, n: (d && d.n) || (base && base.n) || 'Item', e: (d && d.e) || (base && base.e) || '🍽️', price, ob: flash && reg > price ? reg : 0, kg: (d && +d.kg) || .4, stock: d && +d.sou > now ? 0 : d && typeof d.stock === 'number' ? d.stock : null, sot: !!(d && +d.sou > now), vr: ((d && d.vr) || []).filter(v => !((d && d.vd) || []).includes(v)), bx: d && isObj(d.bx) && Array.isArray(d.bx.ids) ? d.bx : null, bc: d && ['brownie', 'cup'].includes(d.bld) && isObj(d.bc) ? d.bc : null };
   }
   async function buildItems(rawItems, big) {
     const maxQ = big ? 99999 : 50;
@@ -218,15 +218,22 @@ export function makeApp(store, opt = {}) {
       need[p.id] = (need[p.id] || 0) + q; if (p.sot) throw E(400, 'stock', `${p.n} is sold out today. Please remove it from your cart.`); if (p.stock !== null && need[p.id] > Math.max(0, p.stock)) throw E(400, 'stock', `${p.n} is out of stock or has fewer left than requested.`);
       const groups = []; for (const vid of p.vr) { const v = await getDoc('variants', vid); if (v && Array.isArray(v.opts)) groups.push(v); }
       const sel = Array.isArray(r.t) ? [...new Set(r.t.map(String))] : [], names = []; let extra = 0; const used = {};
+      /* builder products with portion rules: the same filling / topping may be picked more than once (r.c = { key: portions }); each portion adds its price */
+      const pc = p.bc && isObj(r.c) ? r.c : {}, por = { fill: 0, top: 0 };
       for (const key of sel) {
         const m = /^v_(.+)_(\d{1,3})$/.exec(key); const g = m && groups.find(x => x.id === m[1]); const o = g && g.opts[+m[2]];
         if (!g || !o) throw E(400, 'bad_variant', 'A selected option is no longer available. Please refresh the page.');
         if (g.req && used[g.id]) throw E(400, 'bad_variant', `Please choose only one option for ${g.n}.`);
-        used[g.id] = (used[g.id] || 0) + 1; extra += Math.max(0, +o.p || 0); names.push((g.n ? g.n + ': ' : '') + o.n);
-        /* optional groups can have a maximum number of picks (e.g. up to 4 toppings per brownie) */
-        if (!g.req && +g.max > 0 && used[g.id] > +g.max) throw E(400, 'variant_max', `You can choose up to ${+g.max} for ${g.n}.`);
+        const portioned = !!p.bc && !g.req && (g.role === 'fill' || g.role === 'top'), k = portioned ? Math.min(20, Math.max(1, Math.floor(+pc[key]) || 1)) : 1;
+        used[g.id] = (used[g.id] || 0) + 1; extra += Math.max(0, +o.p || 0) * k; names.push((g.n ? g.n + ': ' : '') + o.n + (k > 1 ? ' ×' + k : '')); if (portioned) por[g.role] += k;
+        /* optional groups can have a maximum number of picks (e.g. up to 4 toppings per brownie); portion rules replace it on builder products */
+        if (!p.bc && !g.req && +g.max > 0 && used[g.id] > +g.max) throw E(400, 'variant_max', `You can choose up to ${+g.max} for ${g.n}.`);
       }
       for (const g of groups) if (g.req && !used[g.id]) throw E(400, 'variant_required', `Please choose an option for ${g.n} (${p.n}).`);
+      if (p.bc && !big) for (const [role, key, word] of [['fill', 'f', 'fillings'], ['top', 't', 'toppings']]) {
+        const L = Array.isArray(p.bc[key]) ? p.bc[key] : [];
+        if (L.length && !L.includes(por[role])) throw E(400, 'portions', `Please choose ${L.filter(x => x > 0).join(' or ')} ${word}${L.includes(0) ? ' (or none)' : ''} for ${p.n}.`);
+      }
       /* Gift box: the customer fills it with exactly bx.n pieces from the products the owner allowed. The box has its own fixed price;
          the pieces inside are checked for availability and stock like normal items, and listed on the order. */
       let bx = null;
@@ -914,6 +921,8 @@ export function makeApp(store, opt = {}) {
       }
       if (col === 'menu') { /* builder screen for this product: build-your-brownie or brownie cup (not for gift boxes) */
         if (['brownie', 'cup'].includes(merged.bld) && !merged.bx) { /* keep */ } else delete merged.bld;
+        /* portion rule: which numbers of fillings / toppings a customer may choose, e.g. 0, 2 or 4 */
+        if (merged.bld && isObj(merged.bc)) { const L = a => [...new Set((Array.isArray(a) ? a : []).map(x => Math.floor(+x)).filter(x => x >= 0 && x <= 20))].sort((x, y) => x - y).slice(0, 8); const t = L(merged.bc.t), f = L(merged.bc.f); if (t.length || f.length) merged.bc = { t, f }; else delete merged.bc; } else delete merged.bc;
       }
       if (col === 'menu') { /* photos and videos: uploaded files or https links */
         for (const [k, mx] of [['imgs', 5], ['vids', 2]]) if (merged[k] !== undefined) merged[k] = (Array.isArray(merged[k]) ? merged[k] : []).map(x => String(x || '').trim()).filter(x => okMedia(x)).slice(0, mx);
