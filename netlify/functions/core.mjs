@@ -1,4 +1,4 @@
-// Sarang Butter – server logic. Storage-agnostic: pass a `store` adapter (Netlify Blobs in production, files in dev).
+// Folklore Brownies – server logic. Storage-agnostic: pass a `store` adapter (Netlify Blobs in production, files in dev).
 import crypto from 'node:crypto';
 import fsp from 'node:fs/promises';
 import pth from 'node:path';
@@ -73,7 +73,7 @@ const DEF = {
   aff: { on: true, rate: 10, hold: 7, min: 100000, disc: 5, days: 30, signup: true, pday: 4, email: '', look: {}, sac: { on: true, max: 50, ot: '', nt: '', oc: '', nc: '', oi: '', ni: '' } },
   rrw: { on: false, name: 'Review Box', fs: 0, fe: 0, days: 7, n: 1, min: 5, cap: 3, ch: false, msg: '', rw: [], pop: {} },
   doku: { on: false, sb: true, q: true, o: true, fp: 0, ff: 0 },
-  mkt: { on: true, brand: 'Sarang Butter', gcat: 'Food, Beverages & Tobacco > Food Items > Bakery', site: '', px: '', gt: '', gc: '' }
+  mkt: { on: true, brand: 'Folklore Brownies', gcat: 'Food, Beverages & Tobacco > Food Items > Bakery', site: '', px: '', gt: '', gc: '' }
 };
 const BS_API = 'https://api.biteship.com/v1', BS_URL = BS_API + '/rates/couriers', GEO_URL = 'https://nominatim.openstreetmap.org';
 /* a picture for the shop: an uploaded file id or an https link */
@@ -349,7 +349,7 @@ export function makeApp(store, opt = {}) {
     else if (okLL(la, ln)) u = `${GEO_URL}/reverse?format=jsonv2&addressdetails=1&zoom=18&lat=${la.toFixed(6)}&lon=${ln.toFixed(6)}`;
     else throw E(400, 'bad_q', 'Type an address to search.');
     if (GEOC.has(u)) return GEOC.get(u);
-    let j; try { const r = await F(u, { headers: { 'user-agent': 'SarangButterShop/1.0 (online ordering)', 'accept-language': 'id,en' }, signal: AbortSignal.timeout(8000) }); if (!r.ok) throw 0; j = await r.json(); }
+    let j; try { const r = await F(u, { headers: { 'user-agent': 'FolkloreBrowniesShop/1.0 (online ordering)', 'accept-language': 'id,en' }, signal: AbortSignal.timeout(8000) }); if (!r.ok) throw 0; j = await r.json(); }
     catch { throw E(502, 'geo_down', 'The map search is not answering right now. Please pick your place on the map instead.'); }
     const one = x => ({ n: str(x.display_name, 200), lat: +x.lat, lng: +x.lon, pc: /^\d{5}$/.test(String((x.address || {}).postcode || '')) ? String(x.address.postcode) : '' });
     const out = { r: (Array.isArray(j) ? j : j && j.lat ? [j] : []).map(one).filter(x => okLL(x.lat, x.lng)) };
@@ -413,7 +413,7 @@ export function makeApp(store, opt = {}) {
       origin_coordinate: { latitude: +C.lat, longitude: +C.lng }, ...(C.pc ? { origin_postal_code: +C.pc } : {}),
       destination_contact_name: o.name, destination_contact_phone: o.phone, destination_contact_email: o.email, destination_address: o.addr, destination_note: 'Order #' + no,
       destination_coordinate: { latitude: +o.lat, longitude: +o.lng }, ...(o.pc ? { destination_postal_code: +o.pc } : {}),
-      courier_company: cc, courier_type: ct, delivery_type: 'now', order_note: 'Sarang Butter order #' + no, reference_id: `${no}-${n}`, items };
+      courier_company: cc, courier_type: ct, delivery_type: 'now', order_note: 'Folklore Brownies order #' + no, reference_id: `${no}-${n}`, items };
     let pk;
     try {
       const r = await bsApi('POST', '/orders', body);

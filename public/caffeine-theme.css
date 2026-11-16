@@ -24,19 +24,27 @@ html.dsk .app{padding:0 32px 140px}
 
 /* announcement bar (was the scrolling ticker) */
 .tk2,.tk{background:var(--accent-espresso);color:var(--text-on-dark);font-size:14px;letter-spacing:.04em;text-transform:uppercase;font-weight:400;padding:10px 0;margin:0}
-.tk2 .mq span{color:var(--text-on-dark)}
+.tk2{text-align:center;overflow:hidden;white-space:nowrap}
+.tk2 .mq{animation:none!important;transform:none!important;display:flex;justify-content:center;width:100%}
+.tk2 .mq span{color:var(--text-on-dark);padding:0 16px;white-space:normal}
+.tk2 .mq span~span{display:none}
 
 /* header */
 .hd{position:sticky;background:var(--bg-body);border-bottom:1px solid var(--border-card);box-shadow:none;max-width:none;margin:0;padding:18px 32px;gap:24px}
 html.dsk .hd{max-width:var(--max-width);margin:0 auto}
 .hd .logo{color:#000;font-size:26px;font-weight:600;letter-spacing:-.03em;text-transform:uppercase;line-height:1;gap:10px}
 .hd .logo small{color:var(--text-muted);font-size:11px;font-weight:400;letter-spacing:.14em;margin-top:3px}
-.hd .logo .lgi{border:0;box-shadow:none;border-radius:10px}
+.hd .logo .lgi{display:none!important}
+.hd .logo span{display:flex;flex-direction:column;line-height:1}
+.hd .cb.ib{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0!important;border-radius:999px}
+.hd .cb.ib svg{display:block}
 .hd .cb{background:transparent;color:#000;border:1px solid var(--border-card);box-shadow:none;border-radius:999px;font:500 14px 'Jost',sans-serif;padding:9px 14px}
 .hd .cb:hover{background:var(--bg-card)}
 .hd .cb.cartbtn{background:var(--cf-btn);border-color:var(--cf-btn);color:var(--cf-btn-fg)}
 .hd .cb.cartbtn:hover{background:var(--cf-btn-hover)}
-.hd .cb.cartbtn svg,.hd .cb.cartbtn img{filter:brightness(0) invert(1)}
+.hd .cb.cartbtn{width:auto;height:auto;display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:999px;overflow:visible}
+.hd .cb.cartbtn .cfbag{display:block}
+.hd .cb.cartbtn .bd{position:static;transform:none;min-width:22px;height:22px;padding:0 6px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;box-shadow:none;border:0}
 .hd .bd{background:var(--bg-body);color:#000;font-weight:600}
 
 /* no decorative checker strip in CAFFEINE */
@@ -113,12 +121,14 @@ input.f,select.f,textarea.f{background:transparent;border:1px solid var(--border
   #sft{margin:48px -16px 0;padding:8px 16px 0}
   /* header: icon-only logo and compact buttons so everything fits (beats the base .logo!important rules) */
   .hd{padding:10px 12px!important;gap:8px!important}
-  .hd .logo{font-size:0!important;gap:0!important;flex:0 0 auto;min-width:0}
-  .hd .logo small{display:none!important}
-  .hd .logo .lgi{width:34px!important;height:34px!important}
+  .hd .logo{font-size:19px!important;gap:0!important;flex:0 1 auto;min-width:0;letter-spacing:-.02em}
+  .hd .logo small{display:block!important;font-size:8px!important;letter-spacing:.18em;margin-top:2px}
+  .hd .cb.ib{width:34px;height:34px}
+  .hd .cb.cartbtn .cbt{display:none}
+  .tk2,.tk{font-size:11px;padding:8px 0}
   .hd>div:last-child{flex:1 1 auto;min-width:0;display:flex;justify-content:flex-end;align-items:center;gap:6px!important}
   .hd .cb{padding:7px 10px!important;font-size:13px!important;min-width:0;white-space:nowrap}
-  .hd .cb.cartbtn{padding:7px 10px!important}
+  .hd .cb.cartbtn{padding:7px 10px!important;gap:6px}
 }
 @media (max-width:380px){
   .hd{padding:8px!important;gap:6px!important}
@@ -187,3 +197,6 @@ label.flab{display:block;margin:14px 0 6px;font:600 14px 'Jost',sans-serif;lette
 .tbar .fw{flex:1 1 280px;order:3;max-width:360px}
 .tbar .fw .sq{max-width:none;flex:none;order:0}
 .bx label.flab:first-of-type{margin-top:10px}
+
+.tbar .chipsx{padding-left:0!important;padding-right:0!important;margin-left:0!important;margin-right:0!important}
+html.dsk .tbar{padding:0 0 20px}
