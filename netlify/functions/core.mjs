@@ -222,7 +222,9 @@ export function makeApp(store, opt = {}) {
         const m = /^v_(.+)_(\d{1,3})$/.exec(key); const g = m && groups.find(x => x.id === m[1]); const o = g && g.opts[+m[2]];
         if (!g || !o) throw E(400, 'bad_variant', 'A selected option is no longer available. Please refresh the page.');
         if (g.req && used[g.id]) throw E(400, 'bad_variant', `Please choose only one option for ${g.n}.`);
-        used[g.id] = 1; extra += Math.max(0, +o.p || 0); names.push((g.n ? g.n + ': ' : '') + o.n);
+        used[g.id] = (used[g.id] || 0) + 1; extra += Math.max(0, +o.p || 0); names.push((g.n ? g.n + ': ' : '') + o.n);
+        /* optional groups can have a maximum number of picks (e.g. up to 4 toppings per brownie) */
+        if (!g.req && +g.max > 0 && used[g.id] > +g.max) throw E(400, 'variant_max', `You can choose up to ${+g.max} for ${g.n}.`);
       }
       for (const g of groups) if (g.req && !used[g.id]) throw E(400, 'variant_required', `Please choose an option for ${g.n} (${p.n}).`);
       /* Gift box: the customer fills it with exactly bx.n pieces from the products the owner allowed. The box has its own fixed price;
@@ -904,6 +906,13 @@ export function makeApp(store, opt = {}) {
       }
       /* "Sold out today": the client sends sod true/false; the server sets the end-of-day time itself (shop time zone), so it resets at midnight. */
       if (col === 'menu') { if (nd.sod === true) merged.sou = dayStart(dayOf(Date.now())) + 86400e3; else if (nd.sod === false) delete merged.sou; else if (old && old.sou) merged.sou = old.sou; else delete merged.sou; delete merged.sod; }
+      if (col === 'variants') { /* brownie/cup builder: how many options a customer may pick, and where the group shows (filling inside, topping on top) */
+        const mx = Math.floor(+merged.max); if (mx > 0) merged.max = Math.min(mx, 20); else delete merged.max;
+        if (!['fill', 'top'].includes(merged.role)) delete merged.role;
+      }
+      if (col === 'menu') { /* builder screen for this product: build-your-brownie or brownie cup (not for gift boxes) */
+        if (['brownie', 'cup'].includes(merged.bld) && !merged.bx) { /* keep */ } else delete merged.bld;
+      }
       if (col === 'menu') { /* photos and videos: uploaded files or https links */
         for (const [k, mx] of [['imgs', 5], ['vids', 2]]) if (merged[k] !== undefined) merged[k] = (Array.isArray(merged[k]) ? merged[k] : []).map(x => String(x || '').trim()).filter(x => okMedia(x)).slice(0, mx);
       }

@@ -1112,4 +1112,29 @@ console.log('— Affiliates: signup, attribution, commission on product total, h
     const zed2 = new C('zed2'); await zed2.post('/api/aff', { op: 'login', u: 'zed', p: 'long-password-1' }); const nwr = await zed2.post('/api/aff', { op: 'bell' }); const nw = nwr.body.news || [];
     ok('affiliates get notices when a flash sale and a free delivery event are live', nw.some(x => /^live:fs:5:/.test(x.id) && /Flash sale is LIVE/.test(x.t) && x.exp > n) && nw.some(x => /^live:fd:/.test(x.id) && /Gratis Ongkir/.test(x.t))); await owner.db({ op: 'set', path: 'menu/5', data: { fp: 0, fs: 0, fe: 0 } }); await owner.db({ op: 'set', path: 'config/fdev', data: { fs: 0, fe: 0, full: true, amt: 0, min: 0, t: '' } }); }
   await owner.db({ op: 'delete', path: 'config/aff' }); }
+console.log('— brownie / cup builder: base, fillings and toppings with a maximum');
+{ const clr = async () => { for (const k of await store.list('sec/rl/')) await store.del(k); };
+  await owner.db({ op: 'set', path: 'variants/bbase', data: { id: 'bbase', n: 'Base', req: true, opts: [{ n: 'Semi-sweet', p: 0 }, { n: 'Bittersweet', p: 4000 }] } });
+  await owner.db({ op: 'set', path: 'variants/bfill', data: { id: 'bfill', n: 'Filling', req: false, max: 2, role: 'fill', opts: [{ n: 'Nutella', p: 5000 }, { n: 'Cream cheese', p: 4000 }, { n: 'Salted caramel', p: 0 }] } });
+  await owner.db({ op: 'set', path: 'variants/btop', data: { id: 'btop', n: 'Topping', req: false, max: 99, role: 'odd', opts: [{ n: 'Oreo', p: 3000 }, { n: 'Sprinkles', p: 0 }] } });
+  const vf = (await pub.db({ op: 'get', path: 'variants/bfill' })).body.data, vt = (await pub.db({ op: 'get', path: 'variants/btop' })).body.data;
+  ok('a filling group keeps its maximum and role', vf.max === 2 && vf.role === 'fill');
+  ok('a too-big maximum is capped at 20 and an unknown role is dropped', vt.max === 20 && !('role' in vt));
+  await owner.db({ op: 'set', path: 'menu/9101', data: { custom: true, n: 'Build Your Brownie', c: 'Brownies', p: 30000, vr: ['bbase', 'bfill', 'btop'], bld: 'brownie' } });
+  await owner.db({ op: 'set', path: 'menu/9102', data: { custom: true, n: 'Odd Builder', c: 'Brownies', p: 30000, bld: 'pizza' } });
+  ok('a product keeps a valid builder screen and drops an unknown one', (await pub.db({ op: 'get', path: 'menu/9101' })).body.data.bld === 'brownie' && !('bld' in (await pub.db({ op: 'get', path: 'menu/9102' })).body.data));
+  await owner.db({ op: 'set', path: 'menu/9103', data: { custom: true, n: 'Box With Builder', c: 'Brownies', p: 30000, bx: { n: 2, ids: ['1'] }, bld: 'cup' } });
+  ok('a gift box cannot also be a builder', !('bld' in (await pub.db({ op: 'get', path: 'menu/9103' })).body.data));
+  await clr();
+  let rb = await alice.post('/api/order', orderBody({ items: [{ id: 9101, q: 1, t: ['v_bfill_0'] }] }));
+  ok('the base must be chosen', rb.status === 400);
+  await clr();
+  rb = await alice.post('/api/order', orderBody({ items: [{ id: 9101, q: 1, t: ['v_bbase_1', 'v_bfill_0', 'v_bfill_1', 'v_bfill_2'] }] }));
+  ok('more fillings than the maximum are refused', rb.status === 400 && /up to 2 for Filling/.test(rb.body.error || rb.body.message || JSON.stringify(rb.body)));
+  await clr();
+  rb = await alice.post('/api/order', orderBody({ items: [{ id: 9101, q: 2, t: ['v_bbase_1', 'v_bfill_0', 'v_bfill_2', 'v_btop_1'] }] }));
+  const li = rb.body.order && rb.body.order.items[0];
+  ok('a built brownie is priced on the server: 30.000 + Bittersweet 4.000 + Nutella 5.000 + free caramel + free sprinkles', rb.status === 200 && li.u === 39000 && li.q === 2 && li.t.includes('Base: Bittersweet') && li.t.includes('Filling: Nutella') && li.t.includes('Topping: Sprinkles'));
+  for (const id of ['9101', '9102', '9103']) await owner.db({ op: 'delete', path: 'menu/' + id });
+  for (const id of ['bbase', 'bfill', 'btop']) await owner.db({ op: 'delete', path: 'variants/' + id }); }
 console.log(`\nAll ${pass} checks passed`);
