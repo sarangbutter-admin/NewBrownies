@@ -6,6 +6,8 @@
   async function api(path, body) {
     const r = await fetch('/api/' + path, { method: body === undefined ? 'GET' : 'POST', headers: body === undefined ? {} : { 'content-type': 'application/json' }, credentials: 'same-origin', body: body === undefined ? undefined : JSON.stringify(body) });
     const j = await r.json().catch(() => ({}));
+    /* a 401 / 403 with no JSON message did not come from this shop's server: the hosting platform's visitor protection (login or password) answered, e.g. on a private preview */
+    if (!r.ok && !j.error && (r.status === 401 || r.status === 403)) throw Object.assign(new Error('The site asked for a sign-in again, so your request was not sent. Please reload the page and try again.'), { status: r.status, code: 'host_auth' });
     if (!r.ok) throw Object.assign(new Error(j.error || 'Request failed (' + r.status + ')'), { status: r.status, code: j.code });
     return j;
   }
