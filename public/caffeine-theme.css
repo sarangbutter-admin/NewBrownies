@@ -278,3 +278,49 @@ html.dsk .tbar{padding:0 0 20px}
 .bcup .csleeve{bottom:6px;height:22px;left:13%;right:13%}
 .bcup .cbites{height:64px;padding:0 24px 30px;gap:2px}
 .bcup .cbites i{width:26px;height:20px}
+
+/* ---- clean line icons and calm banners in the order screens ---- */
+svg.ic{width:1.15em;height:1.15em;vertical-align:-.2em;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;flex:none;margin-right:.1em}
+#pg .md button svg.ic,.bbban button svg.ic{margin-right:.3em}
+/* blind box / reward banner: tan card, thin border, espresso accent (was an animated purple gradient) */
+.bbban{background:var(--bg-card)!important;animation:none!important;color:#000!important;border:1px solid var(--border-card);border-radius:14px!important;box-shadow:none!important}
+.bbban::before,.bbban::after{display:none!important}
+.bbban .bi{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--cf-btn);color:var(--cf-btn-fg);font-size:0;animation:none!important;flex:none}
+.bbban .bi svg.ic{width:20px;height:20px;margin:0}
+.bbban b{color:#000}.bbban small{color:var(--text-muted)}
+.bbban button{background:transparent!important;color:#000!important;border:1px solid var(--border-card)!important;border-radius:999px!important;box-shadow:none!important;font:500 13px 'Jost',sans-serif!important;padding:6px 12px!important;animation:none!important;white-space:nowrap}
+.bbpg{background:#00000014}.bbpg i{background:var(--cf-btn)!important;animation:none!important}
+/* free-delivery and discount pills: quiet outline pills (were flashing green) */
+.fdb,.dsb{background:transparent!important;color:var(--accent-espresso)!important;border:1px solid var(--border-card);animation:none!important;box-shadow:none!important;font:600 11px 'Jost',sans-serif!important;letter-spacing:.02em}
+.dsb i,.dsi{animation:none!important}
+.fdban{background:var(--bg-card)!important;color:#000!important;border:1px solid var(--border-card)!important;border-radius:14px!important;box-shadow:none!important;animation:none!important}
+.fdban .tr{font-size:22px;animation:none!important}.fdban small{color:var(--text-muted)}
+/* payment deadline note and review banner: no hard black outlines */
+.nudge{background:var(--bg-card)!important;color:#000!important;border:1px solid var(--border-card)!important;box-shadow:none!important;border-radius:12px!important;animation:none!important;font-weight:500}
+.rvb{background:var(--bg-card)!important;color:#000!important;border:1px solid var(--border-card)!important;box-shadow:none!important;border-radius:14px!important}
+/* payment options: thin border, espresso header instead of bright green/blue gradients */
+.po{border:1px solid var(--border-card)!important;box-shadow:none!important;border-radius:16px!important;background:var(--bg-body)!important}
+.pot{background:var(--cf-btn)!important;color:var(--cf-btn-fg)!important;font:600 14px 'Jost',sans-serif!important;letter-spacing:.04em}
+.pos{background:#ffffff26!important}
+.pck li:before{color:var(--accent-espresso)!important}
+.por:before,.por:after{border-top-style:solid!important;border-top-width:1px!important}
+/* order progress timeline and small status lines */
+.tl .d::before,.tl .c::before{background:var(--cf-btn)!important;border-color:var(--cf-btn)!important;color:var(--cf-btn-fg)!important}
+.tl .c::before{animation:none!important}
+.tick{animation:none!important;font-weight:600}
+.mcd{background:#00000010!important;color:var(--accent-espresso)!important;animation:none!important}
+.mcd.bbcd{background:var(--cf-btn)!important;color:var(--cf-btn-fg)!important}.mcd.bbcd b{color:var(--cf-btn-fg)!important}.mcd.bbcd:after{display:none!important}
+.ft span{background:var(--cf-btn)!important;color:var(--cf-btn-fg)!important;animation:none!important}
+#pg .ln{border:1px solid var(--border-card)!important;box-shadow:none!important;background:var(--bg-card)!important;border-radius:16px}
+#pg .ln .tile{background:var(--media-bg)!important;background-image:none!important;border:0!important}
+#pg .ln .tile::before,#pg .ln .tile::after{display:none!important}
+/* "spend more for …" goal bars: calm card, thin track, simple dot marker (was black outline, cartoon trucks and a sticker) */
+.gbars{background:var(--bg-card)!important;color:#000!important;border:1px solid var(--border-card)!important;box-shadow:none!important;border-radius:14px!important;font-weight:500!important;padding:14px!important}
+.gbars b{font-weight:600}
+.gt{height:22px}
+.gt:before{top:8px!important;height:6px!important;background:#0000001a!important}
+.gt u{top:8px!important;height:6px!important;background:var(--cf-btn)!important}
+.gt i{top:3px!important;width:16px;height:16px;border-radius:50%;background:var(--cf-btn);border:3px solid var(--bg-card);box-shadow:0 0 0 1px var(--cf-btn);font-size:0!important;line-height:0!important;animation:none!important}
+.gt i svg,.gt i img{display:none!important}
+.gb.ok .gt u{background:var(--cf-btn)!important}.gb.ok .gl{color:#000!important}
+.ge em{opacity:.7}
